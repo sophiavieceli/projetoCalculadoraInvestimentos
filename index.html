@@ -11,7 +11,8 @@
             class="bg-emerald-300 row-span-2 flex flex-col gap-20 items-center justify-center text-center py-8 px-10"
         >
             <h1 class="text-2xl font-semibold">Calculadora de Investimentos</h1>
-            <form class="w-full flex flex-col gap-3">
+            <form class="w-full flex flex-col gap-3" id="investiment-form">
+                <!-- investimento inicial: -->
                 <div class="flex w-full flex-col">
                     <label
                         for="starting-amount"
@@ -30,10 +31,13 @@
                             class="w-5/6 rounded-r-lg px-2"
                             id="starting-amount"
                             placeholder="0.00"
+                            required
+                            name="starting-amount"
                         />
                     </div>
                 </div>
 
+                <!-- aportes adicionais: -->
                 <div class="flex w-full flex-col">
                     <label
                         for="additional-contribution"
@@ -56,6 +60,7 @@
                     </div>
                 </div>
 
+                <!-- prazo: -->
                 <div class="flex w-full flex-col">
                     <label for="time-amount" class="self-start font-semibold"
                         >Prazo</label
@@ -65,10 +70,13 @@
                             type="text"
                             class="w-2/3 rounded-l-lg px-2"
                             id="time-amount"
+                            required
+                            name="time-amount"
                         />
                         <select
                             id="time-amount-period"
                             class="w-1/3 text-center rounded-r-lg border-l-2 border-emerald-600 hover:bg-emerald-950 hover:text-slate-200"
+                            name="time-amount-period"
                         >
                             <option value="monthy">Mensal</option>
                             <option value="yearly">Anual</option>
@@ -76,6 +84,7 @@
                     </div>
                 </div>
 
+                <!-- rentabilidade: -->
                 <div class="flex w-full flex-col">
                     <label for="return-rate" class="self-start font-semibold"
                         >Rentabilidade</label
@@ -93,10 +102,13 @@
                             type="text"
                             class="w-1/2 px-2"
                             id="return-rate"
+                            required
+                            name="return-rate"
                         />
                         <select
                             id="evaluation-period"
                             class="w-1/3 text-center rounded-r-lg border-l-2 border-emerald-600 hover:bg-emerald-950 hover:text-slate-200"
+                            name="evaluation-period"
                         >
                             <option value="monthy">Mensal</option>
                             <option value="yearly">Anual</option>
@@ -104,6 +116,7 @@
                     </div>
                 </div>
 
+                <!-- impostos sobre lucro: -->
                 <div class="flex w-full flex-col">
                     <label for="tax-rate" class="self-start font-semibold"
                         >Impostos sobre lucro</label
@@ -120,6 +133,8 @@
                             class="w-5/6 rounded-r-lg px-2"
                             id="tax-rate"
                             placeholder="0.00"
+                            required
+                            name="tax-rate"
                         />
                     </div>
                 </div>
@@ -127,6 +142,9 @@
             <div class="flex h-12 gap-2 w-full">
                 <button
                     class="w-1/2 rounded-lg bg-emerald-950 text-slate-200 hover:bg-emerald-800"
+                    id="calculate-results"
+                    form="investiment-form"
+                    type="submit"
                 >
                     Calcular
                 </button>
@@ -138,5 +156,6 @@
         <main class="row-span-2 col-span-2">
             <p>Resultados</p>
         </main>
+        <script type="module" src="./main.js"></script>
     </body>
 </html>
