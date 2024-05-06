@@ -167,18 +167,15 @@
                 </button>
             </div>
         </aside>
-        <main class="row-span-2 col-span-2 h-full">
-            <section id="charts-container">
-                <div class="h-[36dvh]">
-                    <p>Resultado final</p>
-                    <canvas
-                        id="final-money-distribution"
-                        class="h-full"
-                    ></canvas>
+        <main class="row-span-2 col-span-2">
+            <section id="charts-container" class="h-full">
+                <div class="h-[36%] flex flex-col items-center pb-10">
+                    <p class="font-bold text-lg">Resultado final</p>
+                    <canvas id="final-money-distribution"></canvas>
                 </div>
-                <div class="h-[56dvh]">
-                    <p>Progressão</p>
-                    <canvas id="progression" class="h-full"></canvas>
+                <div class="h-[56%] flex flex-col items-center">
+                    <p class="font-bold text-lg">Progressão</p>
+                    <canvas id="progression"></canvas>
                 </div>
             </section>
         </main>
