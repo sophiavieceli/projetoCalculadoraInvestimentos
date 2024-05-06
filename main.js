@@ -1,8 +1,19 @@
 import { generateReturnsArray } from "./src/investimentGoals";
+import { Chart } from "chart.js/auto";
 
+const finalMoneyChart = document.getElementById("final-money-distribution");
+const progressionChart = document.getElementById("progression");
 // const calculateButton = document.getElementById("calculate-results");
 const form = document.getElementById("investiment-form");
 const clearFormButton = document.getElementById("clear-form");
+
+let doughnutChartReference = {};
+let progressionChartReference = {};
+// declara aqui porque vão ser alteradas dentro de uma função, se declarasse dentro não daria pra usar fora
+
+function formatCurrency(value) {
+    return value.toFixed(2);
+}
 
 function renderProgression(evt) {
     evt.preventDefault();
@@ -10,7 +21,7 @@ function renderProgression(evt) {
         return;
         // não permite que o cálculo seja executado se ainda tiver um erro
     }
-
+    resetCharts();
     // const startingAmount = Number(form["starting-amount"].value);
 
     const startingAmount = Number(
@@ -41,7 +52,88 @@ function renderProgression(evt) {
         returnRatePeriod
     );
 
-    console.log(returnsArray);
+    const finalInvestimentObject = returnsArray[returnsArray.length - 1];
+
+    doughnutChartReference = new Chart(finalMoneyChart, {
+        type: "doughnut",
+        data: {
+            labels: ["Total investido", "Rendimento", "Imposto"],
+            datasets: [
+                {
+                    data: [
+                        formatCurrency(finalInvestimentObject.investedAmount),
+                        formatCurrency(
+                            finalInvestimentObject.totalInterestReturns *
+                                (1 - taxRate / 100)
+                        ),
+                        formatCurrency(
+                            finalInvestimentObject.totalInterestReturns *
+                                (taxRate / 100)
+                        ),
+                    ],
+                    backgroundColor: [
+                        "rgb(255, 99, 132)",
+                        "rgb(54, 162, 235)",
+                        "rgb(255, 205, 86)",
+                    ],
+                    hoverOffset: 4,
+                },
+            ],
+        },
+    });
+
+    progressionChartReference = new Chart(progressionChart, {
+        type: "bar",
+        data: {
+            labels: returnsArray.map(
+                (investmentObject) => investmentObject.month
+            ),
+            datasets: [
+                {
+                    label: "Total Investido",
+                    data: returnsArray.map((investmentObject) =>
+                        formatCurrency(investmentObject.investedAmount)
+                    ),
+                    // mapeando a primeira lista numa segunda, que só vai ter a quantidade investida ao término de cada mês
+                    backgroundColor: "rgb(255, 99, 132)",
+                },
+                {
+                    label: "Retorno do Investimento",
+                    data: returnsArray.map((investmentObject) =>
+                        formatCurrency(investmentObject.interestReturns)
+                    ),
+                    backgroundColor: "rgb(54, 162, 235)",
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                },
+            },
+        },
+    });
+}
+
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
+    // método que retorna uma lista de todas as chaves do objeto
+}
+
+function resetCharts() {
+    if (
+        !isObjectEmpty(doughnutChartReference) &&
+        !isObjectEmpty(progressionChartReference)
+    ) {
+        doughnutChartReference.destroy();
+        progressionChartReference.destroy();
+        // destroy é um método dos objetos chart dessa biblioteca
+    }
 }
 
 function clearForm() {
@@ -50,6 +142,7 @@ function clearForm() {
     form["time-amount"].value = "";
     form["return-rate"].value = "";
     form["tax-rate"].value = "";
+    resetCharts();
 
     const errorInputContainers = document.querySelectorAll(".error");
     // querySelector devolve o primeiro elemento que encontrar
